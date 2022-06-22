@@ -17,16 +17,15 @@ function computerPlay() {
 // also calls computerPlay func and playRound func
 // returns the result from those functions, telling us who won the game
 
-let promptAnswer = prompt("Rock Paper Scissors - Go!");
-
-function userChoice(input) {
-  if (input == null) {
+function userChoice() {
+  let promptAnswer = prompt("Rock Paper Scissors - Go!");
+  if (promptAnswer == null) {
     return "Choose rock, paper, or scissors!";
   } else {
     console.log(
       "userChoice func about to invoke playRound func and computerPlay func"
     );
-    return playRound(convertString(input), computerPlay());
+    return playRound(convertString(promptAnswer), computerPlay());
   }
 }
 
@@ -61,6 +60,6 @@ function convertString(userInput) {
   return convertedInput;
 }
 
-let result = userChoice(promptAnswer);
+let result = userChoice();
 
 console.log(result);
