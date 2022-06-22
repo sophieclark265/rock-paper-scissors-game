@@ -1,20 +1,40 @@
+// ONE GAME OF ROCK PAPER SCISSORS
+
+// func for computer to generate random choice
 function computerPlay() {
+  console.log("running computerPlay func");
   let arr = ["Rock", "Paper", "Scissors"];
   // this gives each item in array equal chance of being chosen
   // math.floor to round down; math.random to choose random num between 0 and 1;
   // times by arr.length to get the index of array chosen(each index has equal likelihood of being chosen)
 
   let randomOption = arr[Math.floor(Math.random() * arr.length)];
-
-  console.log("this is array " + arr);
-  console.log("this is random Option " + randomOption);
+  console.log("computerPlay func about to return randomOption");
+  return randomOption;
 }
 
-computerPlay();
-computerPlay();
-computerPlay();
+// func that prompts input from user
+// also calls computerPlay func and playRound func
+// returns the result from those functions, telling us who won the game
+
+let promptAnswer = prompt("Rock Paper Scissors - Go!");
+
+function userChoice(input) {
+  if (input == null) {
+    return "Choose rock, paper, or scissors!";
+  } else {
+    console.log(
+      "userChoice func about to invoke playRound func and computerPlay func"
+    );
+    return playRound(convertString(input), computerPlay());
+  }
+}
+
+// func that takes return val from computerPlay and return play from userChoice to determine a winner
 
 function playRound(playerSelection, computerSelection) {
+  let win = false;
+  console.log("playRound func is running");
   if (playerSelection == computerSelection) {
     return `It's a draw! You both chose ${computerSelection}. Go again!`;
   } else if (computerSelection == "Rock" && playerSelection == "Scissors") {
@@ -24,13 +44,23 @@ function playRound(playerSelection, computerSelection) {
   } else if (computerSelection == "Scissors" && playerSelection == "Paper") {
     return "You lose! Scissors beat paper.";
   } else {
+    win = true;
     return `You win! ${playerSelection} beats ${computerSelection}.`;
   }
 }
 
-console.log("testing playRound func " + playRound("Scissors", "Scissors"));
+// function to convert user input string to all lowercase, then capitalize first letter
+// this will allow playRound func to run properly with if...else statements, without worrying about getting inputs that are all caps or something
+function convertString(userInput) {
+  let lowerCaseString = userInput.toLowerCase(); // turns SCISSORS to scissors
+  let stringWithCharRemoved = lowerCaseString.slice(1); // slices all chars from start point inclusive (cissors is what is held in this var)
+  let firstLetter = lowerCaseString.charAt(0).toUpperCase(); // gets first letter of scissors and capitalizes it
 
-// deliverables:
+  let convertedInput = firstLetter + stringWithCharRemoved;
+  console.log("this is the converted input: " + convertedInput);
+  return convertedInput;
+}
 
-// player inputs their choice into html, use parseInt() or prompt() for this?
-// player input needs to be case insensitive, this may mean converting string
+let result = userChoice(promptAnswer);
+
+console.log(result);
