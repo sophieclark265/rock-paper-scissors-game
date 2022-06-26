@@ -73,8 +73,11 @@ buttons.forEach((button) => {
 // takes click event data as parameter (passed from browser when event fired)
 function handleUserChoice(event) {
   // play current round
-
-  if (numberOfRoundsPlayed >= NUMBER_OF_ROUNDS) {
+  let lostMin = Math.round(NUMBER_OF_ROUNDS / 2);
+  if (
+    numberOfRoundsComputerWon >= lostMin ||
+    numberOfRoundsUserWon >= lostMin
+  ) {
     return;
   }
   // userChoice var stores innertext of button clicked
@@ -82,6 +85,7 @@ function handleUserChoice(event) {
   const computerChoice = computerPlay();
   // call playRound func, passing in userChoice var and result of calling computerPlay
   let roundResult = playRound(userChoice, computerChoice);
+  roundResult = true;
 
   // figure out current state of game
   if (roundResult) {
@@ -93,7 +97,11 @@ function handleUserChoice(event) {
 
   // is the game over?
   //
-  if (numberOfRoundsPlayed >= NUMBER_OF_ROUNDS) {
+
+  if (
+    numberOfRoundsComputerWon >= lostMin ||
+    numberOfRoundsUserWon >= lostMin
+  ) {
     if (numberOfRoundsComputerWon > numberOfRoundsUserWon) {
       resultDiv.textContent = `GAME OVER! COMPUTER WON, ${numberOfRoundsComputerWon} to ${numberOfRoundsUserWon}`;
     } else {
@@ -104,14 +112,35 @@ function handleUserChoice(event) {
   }
 
   roundOutcomeDiv.textContent = `You chose: ${userChoice}. Computer chose: ${computerChoice}. You ${
-    roundResult ? "WON. you are awesome" : "LOST BITCH"
+    roundResult ? "WON. you are awesome" : "LOST"
   }`;
 }
 
 let roundOutcomeDiv = document.getElementById("round-outcome");
 let resultDiv = document.getElementById("result-container");
+let roundSelector = document.getElementById("round-selector"); // round election input
+let startGameButton = document.getElementById("start-game-button");
+let roundSelectorErrorDiv = document.getElementById(
+  "round-selector-error-message"
+);
 
-const NUMBER_OF_ROUNDS = 5;
+startGameButton.addEventListener("click", initializeGame);
+
+function initializeGame(event) {
+  let numRounds = roundSelector.value;
+  if (numRounds % 2 === 0 || numRounds < 1) {
+    roundSelectorErrorDiv.textContent =
+      "Number of rounds must be odd and at least 1";
+    return;
+  } else {
+    roundSelectorErrorDiv.textContent = "";
+  }
+  NUMBER_OF_ROUNDS = roundSelector.value;
+  roundSelector.disabled = true;
+  event.target.disabled = true;
+}
+
+let NUMBER_OF_ROUNDS = 0;
 let numberOfRoundsPlayed = 0;
 let numberOfRoundsUserWon = 0;
 let numberOfRoundsComputerWon = 0;

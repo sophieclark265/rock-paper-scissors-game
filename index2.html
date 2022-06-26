@@ -9,8 +9,12 @@
 </head>
 
 <body>
-  <label for="round-selector">Choose Your Number Of Rounds</label>
-  <input type="number" id="round-selector" name="round-selector">
+  <div id="round-selector-container">
+    <label for="round-selector">Choose Your Number Of Rounds</label>
+    <input type="number" value="5" id="round-selector" name="round-selector">
+    <input type="submit" id="start-game-button" value="Start Game">
+    <div id="round-selector-error-message" style="color: red"></div>
+  </div>
   <div id="rps-button-container">
     <button class="rps-button">Rock</button>
     <button class="rps-button">Paper</button>
